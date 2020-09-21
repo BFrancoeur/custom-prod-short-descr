@@ -7,81 +7,44 @@
  * Author: Brian Francoeur
  * Author URI: http://www.websapient.com
  */
+function jcw_strip_tags( $short_description ) {
+    $short_description_stripped = strip_tags( $short_description );
 
-add_action( 'woocommerce_short_description', 'jcw_product_specifications' );
-function jcw_product_specifications ( $short_description ) {
-    
-    $model_number_label = '';
-    $model_number_value = '';
+    // echo $short_description = $short_description_stripped;
 
-    $age_range_label = '';
-    $age_range_value = '';
-
-    $child_capacity_label = '';
-    $child_capacity_value = '';
-
-    $fall_height_label = '';
-    $fall_height_value = '';
-
-    $safety_zone_label = '';
-    $safety_zone_value = '';
-
-    $pipe_diameter_label = '';
-    $pipe_diameter_value = '';
-
-    $product_type_label = '';
-    $product_type_value = '';
-
-    $post_id = get_post()->ID;
-    
-    $short_description_stripped = strip_tags($short_description);
-
-//    echo $short_description .= $short_description_stripped;
-
-//    $short_description_explode = print_r( explode( ' ', $short_description_stripped ) );
-
-//    echo $short_description .= $short_description_explode;
-
-   jcw_substring($short_description_stripped); 
+    jcw_get_model_number_values( $short_description, $short_description_stripped );
 }
+add_action( 'woocommerce_short_description', 'jcw_strip_tags' );
+
+function jcw_get_model_number_values( $short_description, $short_description_stripped ) {
+    
+    $price = substr( $short_description_stripped, 0, 24 );
+    echo $short_description .= '<p><strong>' . $price . '</strong></p>';
+
+    $model_number = substr( $short_description_stripped, 25, 36 );
+    echo $short_description .= '<p><strong>' . $model_number . '</strong></p>';
+
+    $age_range = substr( $short_description_stripped, 55, 30 );
+    echo $short_description .= '<p><strong>' . $age_range . '</strong></p>';
+
+    $child_capacity = substr( $short_description_stripped, 85, 30 );
+    echo $short_description .= '<p><strong>' . $child_capacity . '</strong></p>';
+
+    $fall_height = substr( $short_description_stripped, 117, 21 );
+    echo $short_description .= '<p><strong>' . $fall_height . '</strong></p>';
+
+    $post_diameter = substr( $short_description_stripped, 138, 30 );
+    echo $short_description .= '<p><strong>' . $post_diameter . '</strong></p>';
+
+    $product_type = substr( $short_description_stripped, 165, 30 );
+    echo $short_description .= '<p><strong>' . $product_type . '</strong></p>';
+
+    $safety_zone = substr( $short_description_stripped, 190, 40 );
+    echo $short_description .= '<p><strong>' . $safety_zone . '</strong></p>';
+}
+// function jcw_get_wc_product_short_description( $short_description ) {
 
 
-function jcw_substring($short_description_stripped){ 
-    $len = strlen($short_description_stripped); 
+   
+// }
 
-    // Create a find function that searches for the specification label and use the snippet template  below to rewrite the HTML
-    // Maybe search for string instead using strpos()? 
- 
-    $model_number_label_text = 'Model Number: ';
-    $model_number_label = strpos( $short_description_stripped, $model_number_label_text); // returns starting position of matched string
-    echo '<h2>' . $model_number_label . '</h2>';
-    // model number
-    echo '<p>';
-    echo '<span>' . substr($short_description_stripped, 0, 17) . '</span>'; 
-    echo '<span>' . substr($short_description_stripped, 18, 7) . '</span>';
-    echo '</p>';
-
-    // age range
-    echo '<p>';
-    echo '<span>' . substr($short_description_stripped, 26, 15) . '</span>'; 
-    echo '<span>' . substr($short_description_stripped, 41, 12) . '</span>';
-    echo '</p>';
-
-    // fall height
-    echo '<p>';
-    echo '<span>' . substr($short_description_stripped, 54, 13) . '</span>'; 
-    echo '<span>' . substr($short_description_stripped, 67, 12) . '</span>';
-    echo '</p>';
-
-    // post diameter
-    echo '<p>';
-    echo '<span>' . substr($short_description_stripped, 80, 14) . '</span>'; 
-    echo '<span>' . substr($short_description_stripped, 94, 13) . '</span>';
-    echo '</p>';
-
-    // safety zone
-    echo '<p>';
-    echo '<span>' . substr($short_description_stripped, 108, 11) . '</span>'; 
-    echo '<span>' . substr($short_description_stripped, 119, 24) . '</span>';
-    echo '</p>';
-} 
